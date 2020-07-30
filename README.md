@@ -72,6 +72,17 @@ Different trigger types and event (class, style, custom) provide a wide range of
 
 ## Modifiers
 
+Scroll director utilizing chaining to provide developers a more user friendly API than simply passing a large object. In this way, you would add an element as a target and then pass the specific modifiers you wish to change or adjust the behaviour.
+
+For instance:
+
+`const SD = new ScrollDirector(); // instantiate a scroll director object`
+
+`SD.add('#example').class('ex__class--off', 'ex__class--on').offset(10);`
+
+So what's happening here?  First we're telling the browser to watch an element with the ID 'example'. Because we've specified this only as a .class() type, the tigger type will be a threshold, a line drawn horizontally (default) or vertically across the viewport.  In this case the threshold will be calculated as 10vh from the bottom of the viewport. In this case, the element with the ID 'example' will be given a class of .ex__class--off if the top is below the threshold, and will change to .ex__class--on when the top crosses or is above that threshold.
+
+
 ### Basis 
 The _basis_ is the side of the viewport from which to calculate the trigger threshold.  This can be either the viewport's bottom (default), top, left, or right sides.
 
