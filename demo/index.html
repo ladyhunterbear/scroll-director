@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>Scroll Director | Demo</title>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<link href="css/style.css" rel="stylesheet" />
+
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous" />
+
+		<style>
+
+			@keyframes test1transition {
+				0% {
+					background-color: white;
+				}
+				100% {
+					background-color: black;
+				}
+			}
+
+			.transition {
+				transition: all ease-in-out 200ms;
+			}
+
+			.transition--medium {
+				transition: all ease-in-out 400ms;
+			}
+
+			.transition--slow {
+				transition: all ease-in-out 600ms;
+			}
+
+			.test {
+				position: relative;
+			}
+
+			.test-label {
+				position: absolute;
+				top: 0;
+				left: 0;
+				padding: 5px;
+				font-size: 11px;
+				background-color: white;
+				color: black;
+				font-weight: bold;
+			}
+
+			.test-description {
+				font-size: 11px;
+				padding: 40px 20px;
+
+			}
+
+			#test1 {
+				background-color: grey;
+				height: 500px;
+			}
+
+			#test1.off {
+				background-color: grey;
+			}
+
+			#test1.on {
+				background-color: #efefef;
+			}
+
+			#test2 {
+				background-color: grey;
+				height: 500px;
+			}
+
+			#test2.off {
+				background-color: grey;
+			}
+
+			#test2.on {
+				background-color: #efefef;
+			}
+
+			#test3 {
+				background-color: black;
+				color: white;
+				height: 500px;
+			}
+
+			#test3.off {
+				background-color: black;
+				color: white;
+			}
+
+			#test3.on {
+				background-color: #efefef;
+				color: black;
+			}
+
+			#test4 {
+				background-color: grey;
+				height: 500px;
+			}
+
+			#test5 {
+				background-color: grey;
+				height: 500px;
+			}
+
+			#test6 {
+				background-color: #efefef;
+				height: 500px;
+			}
+
+			#test7 {
+				background-color: lightpink;
+				height: 500px;
+			}
+			
+		</style>
+
+		<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+
+		<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+
+		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+		<script src="index-min.js"></script>
+		<script>
+			window.onload = () => {
+				// toggle class
+				SD.add('#test1').class('off', 'on').offset(10);
+				SD.add('#test2').class('off', 'on').offset(10).basis('top');
+				
+				// range class
+				SD.add('#test3').class('off', 'on').offset(20).range(60).focus('y');
+				
+				// toggle style
+				SD.add('#test4').style('opacity', .2, 1).offset(20);
+
+				// range style
+				SD.add('#test5').style('opacity', 0, 1, 0.2).offset(20).range(60).focus('y');
+
+				// dynamic style
+				SD.add('#test6').dynamicStyle('opacity', 1, 0).offset(20).focus('y');
+
+				var myCustomCallback = (props) => {
+					console.log('myCustomCallback triggerRangePercent: ');
+					console.log(props);
+					const hex1 = 'ff9933';
+					const hex2 = '3399ff';
+					let color1 = [];
+					let color2 = [];
+					console.log(parseInt(hex1.substr(0,2), 16));
+					color1[0] = parseInt(hex1.substr(0,2), 16);
+					color1[1] = parseInt(hex1.substr(2,2), 16);
+					color1[2] = parseInt(hex1.substr(4,2), 16);
+
+					color2[0] = parseInt(hex2.substr(0,2), 16);
+					color2[1] = parseInt(hex2.substr(2,2), 16);
+					color2[2] = parseInt(hex2.substr(4,2), 16);
+
+					const color = [];
+					color[0] = color1[0] + ((color2[0] - color1[0]) * props._triggerRangePercent);
+					color[1] = color1[1] + ((color2[1] - color1[1]) * props._triggerRangePercent);
+					color[2] = color1[2] + ((color2[2] - color1[2]) * props._triggerRangePercent);
+
+					color[0] = color[0] < 0 ? color[0] * -1 : color[0];
+					color[1] = color[1] < 0 ? color[1] * -1 : color[1];
+					color[2] = color[2] < 0 ? color[2] * -1 : color[2];
+					console.log(color[0].toString(16));
+					const newColor = '#' + Math.round(color[0]).toString(16) + Math.round(color[1]).toString(16) + Math.round(color[2]).toString(16);
+					console.log('newColor:' + newColor);
+
+					document.getElementById('test7').style.backgroundColor = newColor;
+				};
+
+				SD.add('#test7').do(myCustomCallback).offset(20).focus('y');
+
+				SD.init();
+			};
+		</script>
+	</head>
+	<body>
+		<div style="position: fixed; z-index: -1; height: 80vh; width: 100%; top: 10vh; left: 0; border-bottom: medium dotted darkred; border-top: thin dotted darkred;">
+			<div style="position: absolute; top: 0; font-size:11px;">10%</div>
+			<div style="position: absolute; bottom: 0; font-size:11px;">10%</div>
+		</div>
+
+		<div style="position: fixed; z-index: -1; height: 60vh; width: 100%; top: 20vh; left: 0; border-bottom: medium dotted red; border-top: thin dotted red;">
+			<div style="position: absolute; top: 0; font-size:11px;">20%</div>
+			<div style="position: absolute; bottom: 0; font-size:11px;">20%</div>
+		</div>
+
+		<div style="position: fixed; z-index: -1; height: 50vh; width: 100%; top: 25vh; left: 0; border-bottom: medium dotted orange; border-top: thin dotted orange;">
+			<div style="position: absolute; top: 0; font-size:11px;">25%</div>
+			<div style="position: absolute; bottom: 0; font-size:11px;">25%</div>
+		</div>
+
+		<div style="position: fixed; z-index: -1; height: 33vh; width: 100%; top: 33vh; left: 0; border-bottom: medium dotted yellow; border-top: thin dotted yellow;">
+			<div style="position: absolute; top: 0; font-size:11px;">33%</div>
+			<div style="position: absolute; bottom: 0; font-size:11px;">33%</div>
+		</div>
+
+		<div style="position: fixed; z-index: -1; height: 1px; width: 100%; top: 50vh; left: 0; border-bottom: none; border-top: thin dotted black;">
+			<div style="position: absolute; top: 0; font-size:11px;">50%</div>
+		</div>
+
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-md-12 col-lg-10 offset-lg-1 text-center" style="height: 110vh;">
+					<h1>Scroll Director</h1>
+					<p>Demo</p>
+				</div>
+				<!-- .col -->
+			</div>
+			<!-- .row -->
+		</div>
+		<!-- .container-fluid -->
+
+		<!-- #test1 -->
+		<div class="container mb-2">
+			<div class="row">
+				<div class="col-md-12">
+					<div id="test1" class="test transition off">
+						<div class="test-label">#test1: Toggle Class</div>
+						<div class="test-description">
+							<ul>
+								<li>Toggle class 'on' / 'off'</li>
+								<li>Basis: bottom</li>
+								<li>Focus: top</li>
+								<li>Offset: 10%</li>
+							</ul>
+						</div>
+					</div> 
+				</div>
+			</div>
+		</div>
+
+		<!-- #test2 -->
+		<div class="container mb-2">
+			<div class="row">
+				<div class="col-md-12">
+					<div id="test2" class="test transition off">
+						<div class="test-label">#test2: Toggle Class</div>
+						<div class="test-description">
+							<ul>
+								<li>Toggle class 'on' / 'off'</li>
+								<li>Basis: top</li>
+								<li>Focus: top</li>
+								<li>Offset: 10%</li>
+							</ul>
+						</div>
+					</div> 
+				</div>
+			</div>
+		</div>
+
+		<!-- #test3 -->
+		<div class="container mb-2">
+			<div class="row">
+				<div class="col-md-12">
+					<div id="test3" class="test transition--medium off">
+						<div class="test-label">#test3: Range Class</div>
+						<div class="test-description">
+							<ul>
+								<li>Range class 'on' / 'off'</li>
+								<li>Basis: top</li>
+								<li>Focus: top</li>
+								<li>Offset: 10%</li>
+								<li>Range: 60%</li>
+							</ul>
+						</div>
+					</div> 
+				</div>
+			</div>
+		</div>
+
+
+		<!-- #test4 -->
+		<div class="container mb-2">
+			<div class="row">
+				<div class="col-md-12">
+					<div id="test4" class="test transition--slow off">
+						<div class="test-label">#test4: Toggle Style</div>
+						<div class="test-description">
+							<ul>
+								<li>Toggle style: opacity, .2, 1</li>
+								<li>Basis: bottom</li>
+								<li>Focus: top</li>
+								<li>Offset: 20%</li>
+							</ul>
+						</div>
+					</div> 
+				</div>
+			</div>
+		</div>
+
+		<!-- #test5 -->
+		<div class="container mb-2">
+			<div class="row">
+				<div class="col-md-12">
+					<div id="test5" class="test transition--slow off">
+						<div class="test-label">#test5: Range Style</div>
+						<div class="test-description">
+							<ul>
+								<li>Range style: opacity, .2, 1, 0</li>
+								<li>Basis: bottom</li>
+								<li>Focus: top</li>
+								<li>Offset: 20%</li>
+								<li>Range: 60%</li>
+							</ul>
+						</div>
+					</div> 
+				</div>
+			</div>
+		</div>
+
+		<!-- #test6 -->
+		<div class="container mb-2">
+			<div class="row">
+				<div class="col-md-12">
+					<div id="test6" class="test off">
+						<div class="test-label">#test6: Dynamic Style</div>
+						<div class="test-description">
+							<ul>
+								<li>Range style: opacity, 0, 1</li>
+								<li>Basis: bottom</li>
+								<li>Focus: top</li>
+								<li>Offset: 20%</li>
+								<li>Range: 60%</li>
+							</ul>
+						</div>
+					</div> 
+				</div>
+			</div>
+		</div>
+
+		<!-- #test7 -->
+		<div class="container mb-2">
+			<div class="row">
+				<div class="col-md-12">
+					<div id="test7" class="test off">
+						<div class="test-label">#test7: Dynamic Style</div>
+						<div class="test-description">
+							<ul>
+								<li>Callback</li>
+								<li>Basis: bottom</li>
+								<li>Focus: top</li>
+								<li>Offset: 20%</li>
+								<li>Range: 60%</li>
+							</ul>
+						</div>
+					</div> 
+				</div>
+			</div>
+		</div>
+
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-md-12" style="background-color: grey; height: 100vh; margin-top: 100px;">
+					Footer Spacer
+				</div>
+			</div>
+		</div>
+	</body>
+</html>

@@ -1,0 +1,35 @@
+{
+  "name": "scroll-director",
+  "version": "1.0.0",
+  "description": "A lightweight scroll monitor with event registration.",
+  "main": "index.js",
+  "dependencies": {
+    "webpack": "^4.42.1",
+    "webpack-cli": "^3.3.11"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.10.2",
+    "@babel/preset-env": "^7.10.2",
+    "@babel/preset-typescript": "^7.10.1",
+    "babel-jest": "^26.0.1",
+    "jest": "^26.0.1"
+  },
+  "scripts": {
+    "test": "jest",
+    "build": "webpack"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ladyhunterbear/scroll-director.git"
+  },
+  "keywords": [
+    "scroll",
+    "javascript"
+  ],
+  "author": "Jeremy Harper",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/ladyhunterbear/scroll-director/issues"
+  },
+  "homepage": "https://github.com/ladyhunterbear/scroll-director#readme"
+}
